@@ -61,5 +61,8 @@ DEPENDENCIES
   pry (= 0.11.3)
   rubocop (= 0.51.0)
 
+RUBY VERSION
+   ruby 2.4.2p198
+
 BUNDLED WITH
    1.16.0
