@@ -1,0 +1,4 @@
+#!/bin/sh
+
+DIR="$(dirname $0)"
+EXTRACT=url ruby ${DIR}/cloudinaryls.rb | parallel --jobs 10 -- curl -fLO
