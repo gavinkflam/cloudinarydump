@@ -31,7 +31,9 @@ RUN \
   # Install bundler
   gem install bundler && \
   # Install gems
-  bundle install
+  bundle install \
+    --without development test \
+    --no-cache
 
 # Mount output directory
 VOLUME ${OUTDIR}
