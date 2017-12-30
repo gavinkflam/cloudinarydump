@@ -1,4 +1,41 @@
-#!/bin/sh
+#!/bin/bash
 
+# Directory of the script
 DIR="$(dirname $0)"
-EXTRACT=url ruby ${DIR}/cloudinaryls.rb | parallel --jobs 10 -- curl -fLO
+
+# Use bash shell for parallel in order to make use of exported function
+export PARALLEL_SHELL=/bin/bash
+
+# Extract only url for cloudinaryls
+export EXTRACT=url
+
+# Download a single file from the URL provided
+curl_one() {
+  # Extract base filename from the URL
+  fname=${1##*/}
+  # Extra parameters for composing th curl command
+  param=''
+
+  # Add time-cond to download the already exist file
+  # only if the file was modified
+  if [ -f "$fname" ]; then
+    param=" --time-cond ${fname}"
+  fi
+
+  # Compose the command
+  command="curl --fail --location --output ${fname}${param} $1"
+
+  # Output and execute the command
+  echo -e ''
+  echo -e "$command"
+  `$command`
+}
+
+# Export the function for parallel to execute
+export -f curl_one
+
+# Obtain the urls via cloudianryls Ruby script
+urls=`ruby ${DIR}/cloudinaryls.rb`
+
+# Download the images concurrently via parallel
+parallel --bar --jobs 25 -- curl_one ::: $urls
