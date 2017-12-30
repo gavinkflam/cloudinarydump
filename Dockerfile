@@ -22,9 +22,9 @@ ENV \
   API_KEY="CHANGEME" \
   API_SECRET="CHANGEME"
 
-# Copy sourcecode into container
+# Copy Gemfiles into container
 WORKDIR ${APPDIR}
-COPY . .
+COPY Gemfile Gemfile.lock ./
 
 RUN \
   # Write gem install options into gemrc
@@ -35,6 +35,9 @@ RUN \
   bundle install \
     --without development test \
     --no-cache
+
+# Copy all files into container
+COPY . .
 
 # Mount output directory
 VOLUME ${OUTDIR}
