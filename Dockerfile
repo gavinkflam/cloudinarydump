@@ -10,6 +10,7 @@ RUN \
     # JSON native extension for Ruby
     ruby-json \
     # Install runtime dependencies
+    bash \
   	curl \
     parallel
 
@@ -38,4 +39,4 @@ RUN \
 # Mount output directory
 VOLUME ${OUTDIR}
 
-CMD ["sh", "-c", "cd ${OUTDIR}; ${APPDIR}/cloudinarydump"]
+CMD ["/bin/bash", "-c", "cd ${OUTDIR}; ${APPDIR}/cloudinarydump"]
